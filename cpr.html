@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	
+<head>
+	
+<script src = "compute.js"></script>
+<script src = "format.js"></script>
+
+</head>
+
+<body>
+
+<h1>Pokemon Strength Rater</h1>
+
+<!--
+SHOUT-OUTS
+-->
+
+<p>Choose Pokemon:</p>
+
+<button type="button"
+onclick='document.getElementById("ivs").style.display="block"'>
+	IVs?
+</button>
+
+<p id="ivs" style="display:none">Select IVs</p>
+
+<button type="button"
+onclick='document.getElementById("result").innerHTML = formatResult()'>
+	Get result
+</button>
+
+<p id="result"></p>
+
+<ul id="myList">
+</ul>
+
+</body>
+
+</html>
