@@ -1,8 +1,26 @@
 function formatMoveDamage(move, moveDamage) {
 	var moveDamageString;
 	moveDamageString = move.name + " Damage: " + moveDamage + ", ";
+	moveDamageString += "Time: " + move.time + ", ";
 	moveDamageString += "DPS: " + (moveDamage / move.time).toFixed(2) + "<br>";
 	return moveDamageString;
+}
+
+function formatHiddenText(id, buttonText, hiddenText) {
+	var noDisplayCode = '<button type="button"';
+	noDisplayCode += 'onclick=\'document.getElementById("';
+	noDisplayCode += id;
+	noDisplayCode += '").style.display="block"\'>';
+	noDisplayCode += buttonText;
+	noDisplayCode += '</button>';
+	
+	noDisplayCode += '<p id="';
+	noDisplayCode += id;
+	noDisplayCode += '" style="display:none">';
+	noDisplayCode += hiddenText
+	noDisplayCode += '</p>';
+	
+	return noDisplayCode;
 }
 
 function formatResult() {
@@ -59,9 +77,13 @@ function formatResult() {
 	var attackChargeMoveDamage = computeMoveDamage(atkChargeMove, atk, def);
 	var attackCycleDamage = computeCycleDamage(attackQuickMoveDamage,attackChargeMoveDamage,attackQuicksToBar);
 	
-	var resultFormat = "<b>QUICK MOVE: </b>" + formatMoveDamage(atkQuickMove, attackQuickMoveDamage);
-	resultFormat += "<b>CHARGE MOVE: </b>" + formatMoveDamage(atkChargeMove, attackChargeMoveDamage);
-	resultFormat += "<b>OVERALL DPS: </b>" + formatMoveDamage({name: "Cycle", time: attackCycleTime}, attackCycleDamage);
+	var hiddenText = "<b>QUICK MOVE: </b>" + formatMoveDamage(atkQuickMove, attackQuickMoveDamage);
+	hiddenText += "<b>CHARGE MOVE: </b>" + formatMoveDamage(atkChargeMove, attackChargeMoveDamage);
 	
+	var resultFormat = "<b>OVERALL DPS: </b>" + formatMoveDamage({name: "Full Cycle", time: attackCycleTime}, attackCycleDamage);
+	resultFormat += formatHiddenText("damageDetail", "Detail", hiddenText);
+	
+	//
+	//resultFormat += //resultFormat += 
 	return resultFormat;
 }

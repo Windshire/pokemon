@@ -2,7 +2,7 @@ function printLog(str) {
 	var node = document.createElement("LI");       // Create a <li> node
 	var textnode = document.createTextNode(str);
 	node.appendChild(textnode);					   // Put text in the li
-	document.getElementById("myList").appendChild(node); // li into list
+	//document.getElementById("list").appendChild(node); // li into list
 }
 	
 function computeMovePower(move, attacker) {
