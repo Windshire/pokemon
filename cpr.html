@@ -3,35 +3,37 @@
 	
 <head>
 	
-<script src = "format.js?version=1.1"></script>
-<script src = "temp_name.js"></script>
-<script src = "compute.js?version=1.2"></script>
+	<!--
+	SHOUT-OUTS
+	-->
+		
+	<script src = "format.js?version=0.0"></script>
+	<script src = "temp_name.js?version=0.5"></script>
+	<script src = "compute.js?version=0.2"></script>
 
 
 </head>
 
 <body>
 
-<h1>Pokemon Strength Rater</h1>
+	<h1>Pokemon Strength Rater</h1>
 
-<p id="species"></p>
-<p id="ivs"></p>
-<!--
-SHOUT-OUTS
--->
+	<p id="species"></p>
+	<p id="ivs"></p>
 
-<script>document.getElementById("species").innerHTML = populateSpecies()</script>
-<script>document.getElementById("ivs").innerHTML = formatHiddenText("ivs","IVs?","Select IVs")</script>
+	<script>document.getElementById("species").innerHTML = populateSpecies()</script>
+	
+	<!--
+	<script>document.getElementById("ivs").innerHTML = formatHiddenText("ivs","IVs?","Select IVs")</script>
+	-->
 
-<button type="button"
-onclick='document.getElementById("result").innerHTML = formatResult()'>
-	Get result
-</button>
+	<button type="button"
+	onclick='document.getElementById("result").innerHTML = formatResult()'>
+		Get result
+	</button>
 
-<p id="result"></p>
-
-<ul id="list">
-</ul>
+	<p id="result"></p>
+	<ul id="list"></ul>
 
 </body>
 

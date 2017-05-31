@@ -6,6 +6,15 @@ function formatMoveDamage(move, moveDamage) {
 	return moveDamageString;
 }
 
+/**
+ * 
+ * Creates a paragraph of initially undisplayed text.
+ * The id of the paragraph is passed in as the "id" param.
+ * The content of the paragraph is passed in as the "hiddenText" param.
+ * Creates a button that will reveal this text when clicked.
+ * Text that appears on button is passed in as the "buttonText" param.
+ * 
+ */
 function formatHiddenText(id, buttonText, hiddenText) {
 	var noDisplayCode = '<button type="button"';
 	noDisplayCode += 'onclick=\'document.getElementById("';
@@ -25,51 +34,13 @@ function formatHiddenText(id, buttonText, hiddenText) {
 
 function formatResult() {
 	
-	var atkQuickMove = {
-		name: "Water Gun",
-		power: 5, 
-		energy: 5,
-		type: "WATER",
-		time: 0.5
-	};
-	
-	var atkChargeMove = {
-		name: "Hydro Pump",
-		power: 130, 
-		energy: -100,
-		type: "WATER",
-		time: 3.3
-	};
-	
-	var pokemon = {
-		species: {
-			name: "Vaporeon",
-			type: "WATER",
-			attack: 205,
-			defense: 177,
-			stamina: 260
-		},
-		getAttackStat: function() {
-			return this.species.attack;
-		},
-		getDefenseStat: function() {
-			return this.species.defense;
-		},
-		computeStabBonus: function(move) {
-			if (move.type == this.species.type) {
-				return 1.25;
-			}
-			else {
-				return 1;
-			}
-		},
-		computeEffectiveBonus: function(move) {
-			return 1; //TODO STUB
-		}
-	};
+	var pokemon = getPokemon();
 	
 	var atk = pokemon;
 	var def = pokemon;
+	
+	var atkQuickMove = atk.quickMove;
+	var atkChargeMove = atk.cinematicMove;
 	
 	var attackQuicksToBar = computeQuicksToBar(atkQuickMove, atkChargeMove);
 	var attackCycleTime = computeCycleTime(atkQuickMove, atkChargeMove, attackQuicksToBar);
@@ -83,7 +54,5 @@ function formatResult() {
 	var resultFormat = "<b>OVERALL DPS: </b>" + formatMoveDamage({name: "Full Cycle", time: attackCycleTime}, attackCycleDamage);
 	resultFormat += formatHiddenText("damageDetail", "Detail", hiddenText);
 	
-	//
-	//resultFormat += //resultFormat += 
 	return resultFormat;
 }

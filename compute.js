@@ -1,29 +1,31 @@
 function printLog(str) {
-	var node = document.createElement("LI");       // Create a <li> node
+	var node = document.createElement("LI");
 	var textnode = document.createTextNode(str);
-	node.appendChild(textnode);					   // Put text in the li
-	//document.getElementById("list").appendChild(node); // li into list
+	node.appendChild(textnode);
+	document.getElementById("list").appendChild(node);
 }
+	
 	
 function computeMovePower(move, attacker) {
 	var initialMovePower = move.power;
 	var stabBonus = attacker.computeStabBonus(move);
-	printLog("Move Power: "+ initialMovePower + " * " + stabBonus);
+	printLog("Move Power: "+ initialMovePower + " * (stab:) " + stabBonus);
 	return initialMovePower * stabBonus;
 }
 
 function computeDefenderModifier(move, attacker, defender) {
 	var effectiveBonus = defender.computeEffectiveBonus(move);
 	var statCompare = attacker.getAttackStat() / defender.getDefenseStat();
-	printLog("Stat Compare: " + attacker.getAttackStat() + " / " + defender.getDefenseStat());
-	printLog("Defender Modifier: " + statCompare + " * " + effectiveBonus);
+	printLog("Stat Compare: ("+attacker.species.name+" atk:) " + attacker.getAttackStat() 
+		+ " / ("+defender.species.name+" def:) " + defender.getDefenseStat());
+	printLog("Defender Modifier: " + statCompare + " * (effective:) " + effectiveBonus);
 	var defendingPokemonModifier = statCompare * effectiveBonus;
 	return defendingPokemonModifier;
 }
 function computeMoveDamage(move, attacker, defender) {
 	var movePower = computeMovePower(move, attacker);
 	var defenderModifier = computeDefenderModifier(move, attacker, defender);
-	printLog("Damage: floor(.5 * " + movePower + " * " + defenderModifier + ") + 1");
+	printLog(move.name+" Damage: floor(.5 * " + movePower + " * " + defenderModifier + ") + 1");
 	return Math.floor(.5 * movePower * defenderModifier) + 1;
 }
 
