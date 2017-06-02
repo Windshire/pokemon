@@ -7,33 +7,95 @@
 	SHOUT-OUTS
 	-->
 		
-	<script src = "format.js?version=0.0"></script>
-	<script src = "temp_name.js?version=0.5"></script>
+	<script src = "format.js?version=0.4"></script>
+	<script src = "temp_name.js?version=0.3"></script>
 	<script src = "compute.js?version=0.2"></script>
 
-
+	<title>Pokemon Strength Rater</title>
+	<meta name="author" content="Bob McFadden">
+	<meta name="keywords" content="Pokemon GO, Pokemon, Rating">
+	<meta name="description" 
+		content="This webpage will be a tool for more accurately 
+			assessing the battling strength of a Pokemon in Pokemon GO, 
+			because CP absolutely sucks as an indicator.">
+	
 </head>
 
 <body>
 
 	<h1>Pokemon Strength Rater</h1>
+	
+	<p>
+		This webpage will be a tool for more accurately assessing the 
+		battling strength of a Pokemon in Pokemon GO, because CP 
+		absolutely sucks as an indicator.
+	</p>
+	
+	<a id="showHideDevNotes" href="#" onclick="showHide('devNotes');">
+		Show/Hide Development Progress Notes and Comments
+	</a>
+	
+	<p id="devNotes" style="display:none">
+		Right now, I'm just trying to get a basic idea of how to 
+		program behavior into webpages. 
+		Once I get closer to actually creating something useful, 
+		then I will start to look at making the UI not look like trash. 
+		But that is not a priority right now. I just want 
+		to learn about functionality. The bullet points that appear 
+		when clicking the "Get Result" button are just debugging stuff 
+		that won't be on the actual page.
+		<br><br>
+		June 1 2017: On this first session, I was able to code 
+		the algorithms used to compute attack damage. Since I focused 
+		on this, I haven't looked into actually selecting specific 
+		Pokemon and obtaining unique data for them. So every Pokemon 
+		is a Vaporeon with 0% IVs and a Water Gun/Hydro Pump moveset. 
+		The calculations, however, work correctly, and will continue 
+		to work correctly once I begin to plug other types of Pokemon 
+		and moves in.
+	</p>
 
-	<p id="species"></p>
+	
+
+	<div><br>Choose your attacker:</div>
+	<div id="atkSpecies"></div>
+	
+	<div><br>Choose your defender:</div>
+	<div id="defSpecies"></div>
+	
+	<br>
+	
+	<img src="vaporeon" alt="Vaporeon" style="width:159px; height:190px;">
+	<img src="vaporeon" alt="Vaporeon" style="width:159px; height:190px;">
+	
 	<p id="ivs"></p>
 
-	<script>document.getElementById("species").innerHTML = populateSpecies()</script>
+	<script>document.getElementById("atkSpecies").innerHTML = populateSpecies()</script>
+	<script>document.getElementById("defSpecies").innerHTML = populateSpecies()</script>
 	
 	<!--
 	<script>document.getElementById("ivs").innerHTML = formatHiddenText("ivs","IVs?","Select IVs")</script>
 	-->
+	
 
 	<button type="button"
 	onclick='document.getElementById("result").innerHTML = formatResult()'>
 		Get result
 	</button>
-
 	<p id="result"></p>
-	<ul id="list"></ul>
+	
+	
+	<p>
+		<br><br><br><br>
+	</p>
+	
+	<!-- -->
+	<button id ="debugListButton" type="button"
+		onclick='hideButtonAfterAction("debugListButton","debugList")';>
+			Show super excessive amounts of math
+	</button>
+	<ul hidden id="debugList"></ul>
+	<!-- -->
 
 </body>
 

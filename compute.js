@@ -2,14 +2,14 @@ function printLog(str) {
 	var node = document.createElement("LI");
 	var textnode = document.createTextNode(str);
 	node.appendChild(textnode);
-	document.getElementById("list").appendChild(node);
+	document.getElementById("debugList").appendChild(node);
 }
 	
 	
 function computeMovePower(move, attacker) {
 	var initialMovePower = move.power;
 	var stabBonus = attacker.computeStabBonus(move);
-	printLog("Move Power: "+ initialMovePower + " * (stab:) " + stabBonus);
+	printLog(move.name+" Move Power: "+ initialMovePower + " * (stab:) " + stabBonus);
 	return initialMovePower * stabBonus;
 }
 
@@ -18,7 +18,7 @@ function computeDefenderModifier(move, attacker, defender) {
 	var statCompare = attacker.getAttackStat() / defender.getDefenseStat();
 	printLog("Stat Compare: ("+attacker.species.name+" atk:) " + attacker.getAttackStat() 
 		+ " / ("+defender.species.name+" def:) " + defender.getDefenseStat());
-	printLog("Defender Modifier: " + statCompare + " * (effective:) " + effectiveBonus);
+	printLog("Defender Modifier: (statRat:) " + statCompare + " * (effective:) " + effectiveBonus);
 	var defendingPokemonModifier = statCompare * effectiveBonus;
 	return defendingPokemonModifier;
 }

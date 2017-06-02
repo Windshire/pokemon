@@ -1,3 +1,9 @@
+/**
+ * Given a move and the damage that it deals in this scenario,
+ * this function will create a string formatting that information.
+ * It will display the damage, the time it takes to incur, and the DPS.
+ * 
+ */
 function formatMoveDamage(move, moveDamage) {
 	var moveDamageString;
 	moveDamageString = move.name + " Damage: " + moveDamage + ", ";
@@ -7,7 +13,6 @@ function formatMoveDamage(move, moveDamage) {
 }
 
 /**
- * 
  * Creates a paragraph of initially undisplayed text.
  * The id of the paragraph is passed in as the "id" param.
  * The content of the paragraph is passed in as the "hiddenText" param.
@@ -16,22 +21,63 @@ function formatMoveDamage(move, moveDamage) {
  * 
  */
 function formatHiddenText(id, buttonText, hiddenText) {
-	var noDisplayCode = '<button type="button"';
-	noDisplayCode += 'onclick=\'document.getElementById("';
+	var noDisplayCode = '';
+	
+	noDisplayCode += '<div id="';
 	noDisplayCode += id;
-	noDisplayCode += '").style.display="block"\'>';
+	noDisplayCode += '" hidden>';
+	noDisplayCode += hiddenText
+	noDisplayCode += '</div>';
+	
+	
+	noDisplayCode += '<button id ="';
+	noDisplayCode += id;
+	noDisplayCode += 'Button" type="button"';
+	noDisplayCode += 'onclick=\'hideButtonAfterAction("';
+	noDisplayCode += id+'Button';
+	noDisplayCode += '","';
+	noDisplayCode += id;
+	noDisplayCode += '")\';>';
 	noDisplayCode += buttonText;
 	noDisplayCode += '</button>';
 	
-	noDisplayCode += '<p id="';
-	noDisplayCode += id;
-	noDisplayCode += '" style="display:none">';
-	noDisplayCode += hiddenText
-	noDisplayCode += '</p>';
+	
 	
 	return noDisplayCode;
 }
 
+/**
+ * Hides a specified button after revealing a specified id.
+ * 
+ */
+function hideButtonAfterAction(buttonId, id) {
+	document.getElementById(buttonId).style.visibility = 'hidden';
+	document.getElementById(id).style.display='block';
+}
+
+/**
+ * Given an id, will hide that id if shown, or show if hidden.
+ * 
+ */
+function showHide(id) {
+    var x = document.getElementById(id);
+    if (x.style.display === 'none') {
+        x.style.display = 'block';
+    } else {
+        x.style.display = 'none';
+    }
+}
+
+/**
+ * Returns a string of HTML code to be placed into a <p> tag.
+ * First, it runs all of the necessary computations, calling functions
+ * in compute.js to figure out the DPS of each move, and overall DPS.
+ * The string will show the overall DPS of this attacker against the
+ * given defender, and will create a "Details" button, which (when 
+ * clicked) will display the DPS of the two attacking moves separately.
+ * Right now, it just has the attacker and defender be the same.
+ * 
+ */
 function formatResult() {
 	
 	var pokemon = getPokemon();
@@ -48,10 +94,17 @@ function formatResult() {
 	var attackChargeMoveDamage = computeMoveDamage(atkChargeMove, atk, def);
 	var attackCycleDamage = computeCycleDamage(attackQuickMoveDamage,attackChargeMoveDamage,attackQuicksToBar);
 	
-	var hiddenText = "<b>QUICK MOVE: </b>" + formatMoveDamage(atkQuickMove, attackQuickMoveDamage);
-	hiddenText += "<b>CHARGE MOVE: </b>" + formatMoveDamage(atkChargeMove, attackChargeMoveDamage);
+	var hiddenText = "";
+	hiddenText += "<b>OVERALL DPS: </b>"
+	hiddenText += formatMoveDamage({name: "FULL CYCLE", time: attackCycleTime}, attackCycleDamage);
+	hiddenText += "<b>QUICK MOVE: </b>";
+	hiddenText += formatMoveDamage(atkQuickMove, attackQuickMoveDamage);
+	hiddenText += "<b>CHARGE MOVE: </b>";
+	hiddenText += formatMoveDamage(atkChargeMove, attackChargeMoveDamage);
 	
-	var resultFormat = "<b>OVERALL DPS: </b>" + formatMoveDamage({name: "Full Cycle", time: attackCycleTime}, attackCycleDamage);
+	var resultFormat = "The attacking "+atk.species.name;
+	resultFormat += " will deal an average of "+(attackCycleDamage/attackCycleTime).toFixed(2);
+	resultFormat += " damage per second to the defending "+def.species.name+". ";
 	resultFormat += formatHiddenText("damageDetail", "Detail", hiddenText);
 	
 	return resultFormat;
