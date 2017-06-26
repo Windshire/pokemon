@@ -2,7 +2,7 @@
  * Given a move and the damage that it deals in this scenario,
  * this function will create a string formatting that information.
  * It will display the damage, the time it takes to incur, and the DPS.
- * 
+ *
  */
 function formatMoveDamage(move, moveDamage) {
 	var moveDamageString;
@@ -18,18 +18,18 @@ function formatMoveDamage(move, moveDamage) {
  * The content of the paragraph is passed in as the "hiddenText" param.
  * Creates a button that will reveal this text when clicked.
  * Text that appears on button is passed in as the "buttonText" param.
- * 
+ *
  */
 function formatHiddenText(id, buttonText, hiddenText) {
 	var noDisplayCode = '';
-	
+
 	noDisplayCode += '<div id="';
 	noDisplayCode += id;
 	noDisplayCode += '" hidden>';
 	noDisplayCode += hiddenText
 	noDisplayCode += '</div>';
-	
-	
+
+
 	noDisplayCode += '<button id ="';
 	noDisplayCode += id;
 	noDisplayCode += 'Button" type="button"';
@@ -40,15 +40,15 @@ function formatHiddenText(id, buttonText, hiddenText) {
 	noDisplayCode += '")\';>';
 	noDisplayCode += buttonText;
 	noDisplayCode += '</button>';
-	
-	
-	
+
+
+
 	return noDisplayCode;
 }
 
 /**
  * Hides a specified button after revealing a specified id.
- * 
+ *
  */
 function hideButtonAfterAction(buttonId, id) {
 	document.getElementById(buttonId).style.visibility = 'hidden';
@@ -57,7 +57,7 @@ function hideButtonAfterAction(buttonId, id) {
 
 /**
  * Given an id, will hide that id if shown, or show if hidden.
- * 
+ *
  */
 function showHide(id) {
     var x = document.getElementById(id);
@@ -73,27 +73,25 @@ function showHide(id) {
  * First, it runs all of the necessary computations, calling functions
  * in compute.js to figure out the DPS of each move, and overall DPS.
  * The string will show the overall DPS of this attacker against the
- * given defender, and will create a "Details" button, which (when 
+ * given defender, and will create a "Details" button, which (when
  * clicked) will display the DPS of the two attacking moves separately.
  * Right now, it just has the attacker and defender be the same.
- * 
+ *
  */
 function formatResult() {
 	
-	var pokemon = getPokemon();
-	
-	var atk = pokemon;
-	var def = pokemon;
-	
+	var atk = getPokemon("atk");
+	var def = getPokemon("def");
+
 	var atkQuickMove = atk.quickMove;
 	var atkChargeMove = atk.cinematicMove;
-	
+
 	var attackQuicksToBar = computeQuicksToBar(atkQuickMove, atkChargeMove);
 	var attackCycleTime = computeCycleTime(atkQuickMove, atkChargeMove, attackQuicksToBar);
 	var attackQuickMoveDamage = computeMoveDamage(atkQuickMove, atk, def);
 	var attackChargeMoveDamage = computeMoveDamage(atkChargeMove, atk, def);
 	var attackCycleDamage = computeCycleDamage(attackQuickMoveDamage,attackChargeMoveDamage,attackQuicksToBar);
-	
+
 	var hiddenText = "";
 	hiddenText += "<b>OVERALL DPS: </b>"
 	hiddenText += formatMoveDamage({name: "FULL CYCLE", time: attackCycleTime}, attackCycleDamage);
@@ -101,11 +99,11 @@ function formatResult() {
 	hiddenText += formatMoveDamage(atkQuickMove, attackQuickMoveDamage);
 	hiddenText += "<b>CHARGE MOVE: </b>";
 	hiddenText += formatMoveDamage(atkChargeMove, attackChargeMoveDamage);
-	
+
 	var resultFormat = "The attacking "+atk.species.name;
 	resultFormat += " will deal an average of "+(attackCycleDamage/attackCycleTime).toFixed(2);
 	resultFormat += " damage per second to the defending "+def.species.name+". ";
 	resultFormat += formatHiddenText("damageDetail", "Detail", hiddenText);
-	
+
 	return resultFormat;
 }
