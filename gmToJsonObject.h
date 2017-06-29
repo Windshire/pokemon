@@ -1,0 +1,7 @@
+
+class gmToJsonObject {
+public:
+	
+private:
+	
+}
