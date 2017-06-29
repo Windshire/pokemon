@@ -5,6 +5,8 @@ function printLog(str) {
 	document.getElementById("debugList").appendChild(node);
 }
 
+
+/* IN-GAME DAMAGE CALCULATIONS */
 //Move power: returns the initial power * the same type attack bonus
 function computeMovePower(move, attacker) {
 	var initialMovePower = move.power;
@@ -32,6 +34,7 @@ function computeMoveDamage(move, attacker, defender) {
 	return Math.floor(.5 * movePower * defenderModifier) + 1;
 }
 
+/* */
 function computeQuicksToBar(quickMove,chargeMove) {
 	var result = Math.abs(chargeMove.energy)/quickMove.energy;
 	printLog(result + " quick moves until filled charge bar");
