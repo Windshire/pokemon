@@ -4,8 +4,8 @@ function printLog(str) {
 	node.appendChild(textnode);
 	document.getElementById("debugList").appendChild(node);
 }
-	
-	
+
+//Move power: returns the initial power * the same type attack bonus
 function computeMovePower(move, attacker) {
 	var initialMovePower = move.power;
 	var stabBonus = attacker.computeStabBonus(move);
@@ -13,15 +13,18 @@ function computeMovePower(move, attacker) {
 	return initialMovePower * stabBonus;
 }
 
+//Defender mod: returns the effective mod * atk/def ratio
 function computeDefenderModifier(move, attacker, defender) {
 	var effectiveBonus = defender.computeEffectiveBonus(move);
 	var statCompare = attacker.getAttackStat() / defender.getDefenseStat();
-	printLog("Stat Compare: ("+attacker.species.name+" atk:) " + attacker.getAttackStat() 
+	printLog("Stat Compare: ("+attacker.species.name+" atk:) " + attacker.getAttackStat()
 		+ " / ("+defender.species.name+" def:) " + defender.getDefenseStat());
 	printLog("Defender Modifier: (statRat:) " + statCompare + " * (effective:) " + effectiveBonus);
 	var defendingPokemonModifier = statCompare * effectiveBonus;
 	return defendingPokemonModifier;
 }
+
+//Move damage: damage formula is half of move power * defender mod, rounded down, plus one
 function computeMoveDamage(move, attacker, defender) {
 	var movePower = computeMovePower(move, attacker);
 	var defenderModifier = computeDefenderModifier(move, attacker, defender);

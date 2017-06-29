@@ -4,12 +4,14 @@ var moveSettings = [];
 var selectedPokemon = { 	"atk": 	{
 																		"mon": {},
 																		"quick": {},
-																		"charge": {}
+																		"charge": {},
+																		"ivs": [15,15,15]
 																	},
 													"def": 	{
 																		"mon": {},
 																		"quick": {},
-																		"charge": {}
+																		"charge": {},
+																		"ivs": [15,15,15]
 																	}
 											};
 
@@ -114,12 +116,14 @@ function getPokemon(role) {
 	var mon = selectedPokemon[role]["mon"];
 	var quick = selectedPokemon[role]["quick"];
 	var cinematic = selectedPokemon[role]["charge"];
+	var ivs = selectedPokemon[role]["ivs"];
 
 	var pokemon = {
 
 		species: {
 			name: mon.pokemon_id,
-			type: mon.type,
+			type1: mon.type,
+			type2: mon.type_2,
 			attack: mon.stats.base_attack,
 			defense: mon.stats.base_defense,
 			stamina: mon.stats.base_stamina
@@ -138,22 +142,46 @@ function getPokemon(role) {
 			type: cinematic.pokemon_type,
 			time: cinematic.duration_ms/1000
 		},
+		individualValues: {
+			aiv: ivs[0],
+			div: ivs[1],
+			siv: ivs[2],
+			level: 40
+		},
+
+		//attack stat: (base attack + attack iv) * cpm
 		getAttackStat: function() {
-			return this.species.attack;
+			var baseAttack = this.species.attack;
+			var attackIV = this.individualValues.aiv;
+			var cpm = 1; //TODO
+			return (baseAttack + attackIV) * cpm;
 		},
+		//defense stat: (base defense + defense iv) * cpm
 		getDefenseStat: function() {
-			return this.species.defense;
+			var baseDefense = this.species.defense;
+			var defenseIV = this.individualValues.div;
+			var cpm = 1; //TODO
+			return (baseDefense + defenseIV) * cpm;
 		},
+		//hp stat: (base stamina + stamina iv) * cpm
+		getHPStat: function() {
+			var baseStamina = this.species.stamina;
+			var staminaIV = this.individualValues.siv;
+			var cpm = 1; //TODO
+			return (baseStamina + staminaIV) * cpm;
+		},
+		//if move matches one of its types, attack gets x1.2 STAB multiplier
 		computeStabBonus: function(move) {
-			if (move.type == this.species.type) {
-				return 1.2;
+			var STAB_MULT = 1.2;
+			if (move.type == this.species.type1 || move.type == this.species.type_2) {
+				return STAB_MULT;
 			}
 			else {
 				return 1;
 			}
 		},
 		computeEffectiveBonus: function(move) {
-			return 0.8; //TODO STUB
+			return 1; //TODO STUB
 		}
 	};
 
