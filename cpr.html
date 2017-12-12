@@ -8,7 +8,7 @@
 	-->
 
 	<script src = "format.js?version=0.4"></script>
-	<script src = "temp_name.js?version=0.5"></script>
+	<script src = "temp_name.js?version=0.6"></script>
 	<script src = "compute.js?version=0.2"></script>
 	<script src = "itemTemplates.js?version=0.1"></script>
 
@@ -20,6 +20,9 @@
 		content="This webpage will be a tool for more accurately
 			assessing the battling strength of a Pokemon in Pokemon GO,
 			because CP absolutely sucks as an indicator.">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 </head>
 
@@ -64,43 +67,68 @@
 		tells you how much damage you do to the defender, and not vice versa.
 	</p>
 
-	<table style="width:100%">
-		<tr>
-			<th>
-				<div><br>Choose your attacker:</div>
-				<div id="atkSpecies"></div>
-			</th>
-			<th>
-				<div><br>Choose your defender:</div>
-				<div id="defSpecies"></div>
-			</th>
-		</tr>
-		<tr>
-			<th>
-				<img id="atkImg" src="" alt="" style="width:150px; height:150px;">
-			</th>
-			<th>
-				<img id="defImg" src="" alt="" style="width:150px; height:150px;">
-			</th>
-		</tr>
-		<tr>
-			<th>
-				<div id="atkQuickMoves"></div>
-			</th>
-			<th>
-				<div id="defQuickMoves"></div>
-			</th>
-		</tr>
-		<tr>
-			<th>
-				<div id="atkChargeMoves"></div>
-			</th>
-			<th>
-				<div id="defChargeMoves"></div>
-			</th>
-		</tr>
-	</table>
-
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div><br>Choose your attacker:</div>
+					<div id="atkSpecies"></div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div><br>Choose your defender:</div>
+					<div id="defSpecies"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="text-center">
+					<img id="atkImg" src="" alt="" style="width:150px; height:150px;">
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="text-center">
+					<img id="defImg" src="" alt="" style="width:150px; height:150px;">
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div id="atkQuickMoves"></div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div id="defQuickMoves"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div id="atkChargeMoves"></div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div id="defChargeMoves"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div>
+					<button type="button" class="center-block"
+						onclick='document.getElementById("result").innerHTML = formatResult()'>
+							Get result
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
@@ -113,12 +141,7 @@
 	<script>document.getElementById("ivs").innerHTML = formatHiddenText("ivs","IVs?","Select IVs")</script>
 	-->
 
-<div align = "center">
-	<button type="button"
-	onclick='document.getElementById("result").innerHTML = formatResult()'>
-		Get result
-	</button>
-</div>
+
 	<p id="result"></p>
 
 
