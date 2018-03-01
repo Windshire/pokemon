@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<script src = "format.js?version=0.4"></script>
+		<script src = "temp_name.js?version=0.6"></script>
+		<script src = "compute.js?version=0.2"></script>
+		<script src = "itemTemplates.js?version=0.1"></script>
+
+		<title>Pokemon Strength Rater</title>
+		<meta charset="utf-8">
+		<meta name="author" content="Bob McFadden">
+		<meta name="keywords" content="Pokemon GO, Pokemon, Rating">
+		<meta name="description"
+			content="This webpage will be a tool for more accurately
+				assessing the battling strength of a Pokemon in Pokemon GO,
+				because CP absolutely sucks as an indicator.">
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	</head>
+<!--
+  <body>
+    <div id="atkSpecies">
+      Choose your attacker:
+      <select>
+        <option v-for="s in species">
+          {{ s.pokemon_id }}
+        </option>
+      </select>
+      Choose your attacker:
+      <select>
+        <option v-for="s in species">
+          {{ s.pokemon_id }}
+        </option>
+      </select>
+    </div>
+
+  </body>
+</html>
+-->
+<body>
+
+	<h1>Pokemon Strength Rater</h1>
+
+	<p>
+		This webpage will be a tool for more accurately assessing the
+		battling strength of a Pokemon in Pokemon GO, because CP
+		absolutely sucks as an indicator.
+	</p>
+
+	<div id="cpr" class="container">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div><br>Choose your attacker:</div>
+					<select id="atkSelect" onchange="setImgs()">
+						<option selected="selected">Choose Pokemon:</option>
+		        <option v-for="s in species">
+		          {{ s.pokemon_id }}
+		        </option>
+			    </select>
+          <img id="atkImg" src="" alt="" style="width:150px; height:150px;">
+					<div id="atkQuickMoves"></div>
+					<div id="atkChargeMoves"></div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="text-center">
+					<div><br>Choose your defender:</div>
+					<select id="defSelect" onchange="setImgs()">
+						<option selected="selected">Choose Pokemon:</option>
+		        <option v-for="s in species">
+		          {{ s.pokemon_id }}
+		        </option>
+			    </select>
+					<img id="defImg" src="" alt="" style="width:150px; height:150px;">
+					<div id="defQuickMoves"></div>
+					<div id="defChargeMoves"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div>
+					<button type="button" class="center-block"
+						onclick='document.getElementById("result").innerHTML = formatResult()'>
+							Get result
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<p id="ivs"></p>
+
+
+<script>getSettings(pokemonSettings, "pokemon_settings");</script>
+
+	<!--
+	<script>document.getElementById("ivs").innerHTML = formatHiddenText("ivs","IVs?","Select IVs")</script>
+	-->
+
+
+	<p id="result"></p>
+
+
+
+
+
+	<p>
+		<br><br><br><br>
+	</p>
+
+
+
+
+	<!-- -->
+	<button id ="debugListButton" type="button"
+		onclick='hideButtonAfterAction("debugListButton","debugList")';>
+			Show super excessive amounts of math
+	</button>
+	<ul hidden id="debugList"></ul>
+	<!-- -->
+
+
+
+
+</body>
+
+
+<script>
+var app = new Vue({
+  el: '#cpr',
+  data: {
+    species: [
+      { pokemon_id: "BULBASAUR" },
+      { pokemon_id: "CHARMANDER" },
+      { pokemon_id: "SQUIRTLE" }
+    ]
+  }
+})
+</script>
