@@ -5,52 +5,58 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static('public'))
+app.use(express.static('public'));
 
-let items = [];
-let id = 0;
+let team = [
+  {id: 0, nickname: "Leilani", level: 40, species: "Bulbasaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"},
+  {id: 1, nickname: "Tortank", level: 30, species: "Blastoise", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png"},
+  {id: 2, nickname: "", level: 30, species: "Charizard", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"}
+]
+let id = 2;
 
-app.get('/api/items', (req, res) => {
-  res.send(items);
-  console.log("Client refresh: All 'items' sent/loaded.")
+app.get('/api/team', (req, res) => {
+  res.send(team);
+  console.log("Client refresh: All 'team' sent/loaded.")
 });
 
-app.post('/api/items', (req, res) => {
+app.post('/api/team', (req, res) => {
+  console.log("got in");
+
   id = id + 1;
-  let item = {id:id, text:req.body.text, completed: req.body.completed, priority: req.body.priority};
-  items.push(item);
-  res.send(item);
-  console.log("New item added to server.");
+
+  let mon = {
+    id: id,
+    nickname: req.body.nickname,
+    level: req.body.level,
+    species: req.body.species,
+    sprite: req.body.sprite
+  };
+
+  team.push(mon);
+  res.send(mon);
+  console.log("New Pokémon added to server.");
+
 });
 
-app.delete('/api/items/:id', (req, res) => {
+app.delete('/api/team/:id', (req, res) => {
   let id = parseInt(req.params.id);
-  let removeIndex = items.map(item => { return item.id; }).indexOf(id);
+  let removeIndex = team.map(mon => { return mon.id; }).indexOf(id);
   if (removeIndex === -1) {
-    res.status(404).send("Sorry, that item doesn't exist");
+    res.status(404).send("Sorry, that Pokémon isn't on your team");
     return;
   }
-  items.splice(removeIndex, 1);
+  team.splice(removeIndex, 1);
   res.sendStatus(200);
-  console.log("Item id [" + removeIndex + "] deleted.");
+  console.log("Pokémon [" + removeIndex + "] deleted.");
 });
 
-app.put('/api/items/:id', (req, res) => {
-  let id = parseInt(req.params.id);
-  let itemsMap = items.map(item => { return item.id; });
-  let index = itemsMap.indexOf(id);
-  let item = items[index];
-  item.completed = req.body.completed;
-  item.text = req.body.text;
-  item.priority = req.body.priority;
-  // handle drag and drop re-ordering
-  if (req.body.orderChange) {
-    let indexTarget = itemsMap.indexOf(req.body.orderTarget);
-    items.splice(index,1);
-    items.splice(indexTarget,0,item);
-  }
-  res.send(item);
-  console.log("Item id [" + index + "] modified.");
+app.put('/api/team/:id', (req, res) => {
+  let monMap = team.map(mon => { return mon.id; });
+  let index = monMap.indexOf(parseInt(req.params.id));
+  let mon = team[index];
+  mon.level = req.body.level;
+  res.send(mon);
+  console.log("Pokémon [" + index + "] modified.");
 });
 
 app.listen(3000, () => console.log('Server listening on port 3000!'));

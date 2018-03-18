@@ -8,45 +8,55 @@
   <link rel="stylesheet" href="style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js" integrity="sha256-mpnrJ5DpEZZkwkE1ZgkEQQJW/46CSEh/STrZKOB/qoM=" crossorigin="anonymous"></script>
 </head>
 
 <body>
 
-  <div class="jumbotron">
+  <div id="app">
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-3">Pokémon GO Team Builder</h1>
+        <p>
+          Use this page to customize your battle party.
+        </p>
+        <p>
+          <a class="btn btn-primary btn-lg" href="#" role="button" v-on:click.prevent="addingSwitch">
+            Add a Pokémon to your team &raquo;
+          </a>
+        </p>
+        <form v-show="adding" v-on:submit.prevent="addMon" class="form-group">
+          <label for="species">Pokémon species:</label>
+          <input type="text" class="form-control" v-model="species" id="species">
+          <button type="submit">Add</button>
+        </form>
+      </div>
+    </div>
+
+
+
     <div class="container">
-      <h1 class="display-3">Pokémon GO Team Builder</h1>
-      <p>
-        Use this page to customize your battle party.
-      </p>
-      <p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">
-          Add a Pokémon to your team &raquo;
+      <p class="lead">Pokémon on your Team:</p>
+      <ul class="list-group">
+        <a v-for="mon in team" href="#" class="list-group-item" v-on:click.prevent="">
+          <img v-bind:src="mon.sprite">
+            <span v-show="mon.nickname">
+              "{{mon.nickname}}"
+            </span>
+           (Lv. {{mon.level}} {{mon.species}})
+          <button class="badge" v-on:click="deleteMon(mon)">Remove from team</button>
+          <button class="badge" v-show="mon.level < 40" v-on:click.prevent="powerUp(mon)">Power up!</button>
         </a>
-      </p>
+      </ul>
     </div>
-  </div>
 
-  <div id="app" class="container">
-    <p class="lead">Pokémon on your Team:</p>
-    <ul class="list-group">
-      <a v-for="mon in team" href="#" class="list-group-item">
-        <img v-bind:src="mon.sprite">
-          <span v-show="mon.nickname">
-            "{{mon.nickname}}"
-          </span>
-         (Lv. {{mon.level}} {{mon.species}})
-        <button class="badge">Remove from team</button>
-        <button class="badge" v-show="mon.level < 40">Power up!</button>
-      </a>
-    </ul>
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted"><a href="#">github</a></span>
+      </div>
+    </footer>
   </div>
-
-  <footer class="footer">
-    <div class="container">
-      <span class="text-muted"><a href="#">github</a></span>
-    </div>
-  </footer>
 
 </body>
 </html>
@@ -55,11 +65,67 @@
 var app = new Vue({
   el: '#app',
   data: {
-    team: [
-      {id: 0, nickname: "Leilani", level: 40, species: "Bulbasaur", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"},
-      {id: 0, nickname: "Tortank", level: 30, species: "Blastoise", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png"},
-      {id: 0, nickname: "", level: 30, species: "Charizard", sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"}
-    ]
+    team: [],
+    species: '',
+    level: 20,
+    adding: false
+  },
+  created: function() {
+    this.getItems();
+  },
+  methods: {
+    getItems: function() {
+      axios.get("/api/team").then(response => {
+         this.team = response.data;
+         return true;
+      }).catch(err => {
+        console.log("Error getting team: " + err);
+      });
+    },
+    deleteMon: function(mon) {
+      if (confirm("Are you sure that you want to delete this " + mon.species + "?")) {
+        axios.delete("/api/team/" + mon.id).then(response => {
+        	this.getItems();
+        	return true;
+        }).catch(err => {
+          console.log("Error deleting Pokémon: " + err);
+        });
+      }
+    },
+    powerUp: function(mon) {
+      axios.put("/api/team/" + mon.id, {
+      	level: mon.level + 0.5,
+      }).then(response => {
+        this.getItems();
+      	return true;
+      }).catch(err => {
+        console.log("Error modifying level: " + err);
+      });
+    },
+    addMon: function() {
+      fetch('https://pokeapi.co/api/v2/pokemon-form/' + this.species.toLowerCase()).then(response => {
+         return response.json();
+      }).then(json => {
+        axios.post("/api/team", {
+          nickname: '',
+          level: 20,
+        	species: this.species.charAt(0).toUpperCase() + this.species.slice(1).toLowerCase(),
+          sprite: json.sprites.front_default
+        }).then(response => {
+          	this.species = '';
+          	this.getItems();
+          	return true;
+          }).catch(err => {
+            console.log("Error adding Pokémon: " + err);
+          });
+      	return true;
+      }).catch(err => {
+        console.log("Error loading " + mon.species + " sprite");
+      })
+    },
+    addingSwitch: function() {
+      this.adding = !this.adding;
+    }
   }
 });
 </script>
