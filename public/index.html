@@ -28,8 +28,7 @@
         </p>
         <form v-show="adding" v-on:submit.prevent="addMon" class="form-group">
           <label for="species">Pokémon species:</label>
-          <input type="text" class="form-control" v-model="species" id="species">
-          <button type="submit">Add</button>
+          <input type="text" class="form-control" v-model="species" id="species"><button type="submit">Add</button>
         </form>
       </div>
     </div>
@@ -53,7 +52,7 @@
 
     <footer class="footer">
       <div class="container">
-        <span class="text-muted"><a href="#">github</a></span>
+        <span class="text-muted"><a href="https://github.com/Windshire/pokemon">github</a></span>
       </div>
     </footer>
   </div>
